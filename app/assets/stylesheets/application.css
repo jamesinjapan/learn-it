@@ -1,0 +1,57 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+html,body {
+    padding:0;
+    margin:0;
+    height:100%;
+}
+
+.flashcard-container {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  font-family: 'Fredoka One', cursive;
+}
+
+#key-0 {
+  background-color: #E24E42;
+}
+
+#key-1 {
+  background-color: #E9B000;
+}
+
+#key-2 {
+  background-color: #EB6E80;
+}
+
+#key-3 {
+  background-color: #008F95;
+}
+
+.flashcard {
+  font-size: 25vh;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  justify-self: center;
+  align-self: center;
+  text-align: center;
+  line-height: 45vh;
+}

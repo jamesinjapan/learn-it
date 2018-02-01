@@ -1,0 +1,43 @@
+<div class="flashcard-container">
+  <% @item[:elements].keys.shuffle.each do |key| %>
+    <% value = @item[:elements][key] %>
+    <div id="key-<%= key %>" class="flashcard" onmouseover="playAudio(<%= key %>);" onmouseout="stopAudio(<%= key %>);" onclick="checkOrder(<%= key %>);"><%= value %></div>
+  <% end %>    
+</div>
+<script>
+  function checkOrder(orderKey) {
+    if (orderKey == currentOrder) {
+      ele = document.getElementById('key-' + orderKey);
+      ele.style.backgroundColor = 'grey';
+      ele.style.color = 'black';
+      ele.onmouseover = "";
+      currentOrder++;
+      if (currentOrder >= totalLength) {
+        ele = document.getElementById('key-' + currentOrder);
+        ele.style.backgroundColor = 'grey';
+        ele.style.color = 'black';
+        ele.onmouseover = "";
+        window.alert("FINISHED!"); 
+      } 
+    } else {
+      window.alert("NUH UH!");
+    }
+  }
+  
+  function playAudio(orderKey) {
+    var audio = document.getElementById("sound-" + orderKey);
+    audio.play();
+  }
+  
+  function stopAudio(orderKey) {
+    var audio = document.getElementById("sound-" + orderKey);
+    audio.pause();
+    audio.currentTime = 0;
+  }
+  
+  var currentOrder = 0;
+  var totalLength = <%= @item[:target_word].length %>;
+</script>
+<% @item[:elements].each do |key, value| %>
+    <%= audio_tag(value, preload: "auto", id: "sound-" + key.to_s) %>
+<% end %>
