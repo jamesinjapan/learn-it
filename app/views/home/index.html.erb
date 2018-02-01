@@ -1,4 +1,5 @@
 <div class="flashcard-container">
+  <h1>Spelling: <%= @item[:target_word] %></h1>
   <% @item[:elements].keys.shuffle.each do |key| %>
     <% value = @item[:elements][key] %>
     <div id="key-<%= key %>" class="flashcard" onmouseover="playAudio(<%= key %>);" onmouseout="stopAudio(<%= key %>);" onclick="checkOrder(<%= key %>);"><%= value %></div>
@@ -18,6 +19,7 @@
         ele.style.color = 'black';
         ele.onmouseover = "";
         window.alert("FINISHED!"); 
+        document.location.reload();
       } 
     } else {
       window.alert("NUH UH!");
