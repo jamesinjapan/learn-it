@@ -1,28 +1,30 @@
 <div class="flashcard-container">
-  <h1>Spelling: <%= @item[:target_word] %></h1>
+  <div id="header">
+    <div id="header-row">
+      <div id="spelling">Spelling: <%= @item[:target_word] %></div>
+      <div id="speaker" onclick="playAudio('target_word');"><%= image_tag("speaker") %></div>
+    </div>
+  </div>
   <% @item[:elements].keys.shuffle.each do |key| %>
     <% value = @item[:elements][key] %>
-    <div id="key-<%= key %>" class="flashcard" onmouseover="playAudio(<%= key %>);" onmouseout="stopAudio(<%= key %>);" onclick="checkOrder(<%= key %>);"><%= value %></div>
+    <div id="key-<%= key %>" class="flashcard" onclick="clickFlashcard(<%= key %>);"><%= value %></div>
   <% end %>    
 </div>
 <script>
   function checkOrder(orderKey) {
     if (orderKey == currentOrder) {
-      ele = document.getElementById('key-' + orderKey);
-      ele.style.backgroundColor = 'grey';
-      ele.style.color = 'black';
-      ele.onmouseover = "";
+      disableFlashcard(orderKey); 
+      playAudio('result_good');
       currentOrder++;
       if (currentOrder >= totalLength) {
-        ele = document.getElementById('key-' + currentOrder);
-        ele.style.backgroundColor = 'grey';
-        ele.style.color = 'black';
-        ele.onmouseover = "";
-        window.alert("FINISHED!"); 
-        document.location.reload();
+        disableFlashcard('3'); 
+        playAudio('result_success');
+        setTimeout(function(){
+          document.location.reload();
+        }, 2000);
       } 
     } else {
-      window.alert("NUH UH!");
+      playAudio('result_bad');
     }
   }
   
@@ -37,9 +39,48 @@
     audio.currentTime = 0;
   }
   
+  function clickFlashcard(orderKey) {
+    if (lastTouch != orderKey) {
+      if (lastTouch != undefined) {
+        stopAudio(lastTouch);
+        deactivateFlashcard(lastTouch);
+      }
+      activateFlashcard(orderKey);
+      playAudio(orderKey);
+      lastTouch = orderKey;
+    } else {
+      checkOrder(orderKey);
+    }
+  }
+  
+  function activateFlashcard(orderKey) {
+    document.getElementById('key-' + orderKey).classList.add('flashcard-active');
+  }
+  
+  function deactivateFlashcard(orderKey) {
+    document.getElementById('key-' + orderKey).classList.remove('flashcard-active');
+  }
+  
+  function disableFlashcard(orderKey) {
+    deactivateFlashcard(orderKey);
+    ele = document.getElementById('key-' + orderKey)
+    ele.classList.add('flashcard-disabled');
+    ele.onclick = null;
+  }
+  
+  document.addEventListener("DOMContentLoaded", function(event) { 
+    playAudio("target_word");
+  });
+  
   var currentOrder = 0;
   var totalLength = <%= @item[:target_word].length %>;
+  var lastTouch = undefined;
 </script>
-<% @item[:elements].each do |key, value| %>
+<% audio_items = @item[:elements] %>
+<% audio_items[:result_good] = "result_good" %>
+<% audio_items[:result_bad] = "result_bad" %>
+<% audio_items[:result_success] = "result_success" %>
+<% audio_items[:target_word] = @item[:target_word] %>
+<% audio_items.each do |key, value| %>
     <%= audio_tag(value, preload: "auto", id: "sound-" + key.to_s) %>
 <% end %>

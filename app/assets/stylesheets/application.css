@@ -29,7 +29,7 @@ html,body {
   font-family: 'Fredoka One', cursive;
 }
 
-h1 {
+#header {
   margin: 0;
   padding: 0;
   grid-column-start: 1;
@@ -37,7 +37,30 @@ h1 {
   grid-row-start: 1;
   grid-row-end: 1;
   justify-self: center;
+  height: 100%;
+  width: 100%;
+}
+
+#header-row {
   font-size: 4vh;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#spelling{
+  flex: 1 0 4vh;
+  text-align: right;
+  padding-right: 10vw;
+}
+
+#speaker {
+  flex: 1 0 4vh;
+}
+
+#speaker img {
+  height: 100%;
 }
 
 #key-0 {
@@ -65,4 +88,14 @@ h1 {
   align-self: center;
   text-align: center;
   line-height: 40vh;
+}
+
+.flashcard-active {
+  color: #000;
+  background-color: #FFF;
+}
+
+.flashcard-disabled {
+  color: #000;
+  background-color: #CCC !important;
 }
